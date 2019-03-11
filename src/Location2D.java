@@ -17,11 +17,9 @@ public class Location2D {
 		return this.y;
 	}
 	
-	public double getDistanceToLocation(Location2D location) {
-		
+	public double getDistance(Location2D location, boolean isPeriodic) {
 		double distanceX = this.x - location.getX();
 		double distanceY = this.y - location.getY();
-		
 		return Math.pow(Math.pow(distanceX, 2) + Math.pow(distanceY, 2), 0.5);
 	}
 	
