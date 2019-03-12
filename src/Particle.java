@@ -1,7 +1,10 @@
 public class Particle extends Location2D {
     
     private double radius;
+    private double property;
     private int number;
+
+    public Particle() { }
 
     public Particle(double radius, double x, double y, int number) {
         super(x,y);
@@ -38,5 +41,13 @@ public class Particle extends Location2D {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public double getProperty() {
+        return this.property;
+    }
+
+    public void setProperty(double property) {
+        this.property = property;
     }
 }
