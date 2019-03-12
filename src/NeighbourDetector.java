@@ -7,7 +7,7 @@ public final class NeighbourDetector {
 	
 	
 	
-	public static Map<Integer, List<Particle>> BruteForce(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
+	public static Map<Integer, List<Particle>> BruteForce(Particle[] particles, int N, double L,  double rc, boolean isPeriodic) {
 		Map<Integer, List<Particle>> output = new HashMap<>();
 		for (Particle particle : particles)
 		{
@@ -16,7 +16,7 @@ public final class NeighbourDetector {
 		return output;
 	}
 	
-	public static boolean[][] CellIndexMethod(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
+	public static Map<Integer, List<Particle>> CellIndexMethod(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
 		boolean[][] output = new boolean[particles.length][particles.length];
 		Map<Integer, LinkedList<Particle>> grid = makeGrid(particles, L, M);
 		for (Particle particle : particles)

@@ -4,8 +4,6 @@ import java.io.FileWriter;
 import java.util.Random;
 import java.util.Scanner;
 
-import jdk.jfr.events.FileWriteEvent;
-
 public final class IOManager
 {
     private double L = 20; // Side length
@@ -16,8 +14,11 @@ public final class IOManager
     private double maxL;
     private int maxN;
     private double maxR = 0.5;
-    private final double minL = 0.0001;
+    private double minL = 0.0001;
+    private double simulationTime = 0;
     
+    
+    public IOManager() { }
     
     public IOManager(int maxN, double maxR, double minL)
     {
@@ -146,6 +147,105 @@ public final class IOManager
             ret += (random.nextDouble() +  this.minL) * this.L + " " + (random.nextDouble() + this.minL) * this.L + "\n";
         }
         return ret;
+    }
+
+    /**
+     * @param l the l to set
+     */
+    public void setL(double l) {
+        L = l;
+    }
+
+    /**
+     * @param rc the rc to set
+     */
+    public void setRc(double rc) {
+        this.rc = rc;
+    }
+
+    /**
+     * @param n the n to set
+     */
+    public void setN(int n) {
+        N = n;
+    }
+
+    /**
+     * @param m the m to set
+     */
+    public void setM(int m) {
+        M = m;
+    }
+
+    /**
+     * @param particles the particles to set
+     */
+    public void setParticles(Particle[] particles) {
+        this.particles = particles;
+    }
+
+    /**
+     * @return the maxL
+     */
+    public double getMaxL() {
+        return maxL;
+    }
+
+    /**
+     * @param maxL the maxL to set
+     */
+    public void setMaxL(double maxL) {
+        this.maxL = maxL;
+    }
+
+    /**
+     * @return the maxN
+     */
+    public int getMaxN() {
+        return maxN;
+    }
+
+    /**
+     * @param maxN the maxN to set
+     */
+    public void setMaxN(int maxN) {
+        this.maxN = maxN;
+    }
+
+    /**
+     * @return the maxR
+     */
+    public double getMaxR() {
+        return maxR;
+    }
+
+    /**
+     * @param maxR the maxR to set
+     */
+    public void setMaxR(double maxR) {
+        this.maxR = maxR;
+    }
+
+    /**
+     * @return the minL
+     */
+    public double getMinL() {
+        return minL;
+    }
+
+    /**
+     * @param minL the minL to set
+     */
+    public void setMinL(double minL) {
+        this.minL = minL;
+    }
+
+    public double getSimulationTime() {
+        return simulationTime;
+    }
+
+    public void setSimulationTime(double simulationTime) {
+        this.simulationTime = simulationTime;
     }
 
 }
