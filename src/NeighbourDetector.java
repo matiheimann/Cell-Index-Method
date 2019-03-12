@@ -80,6 +80,28 @@ public final class NeighbourDetector {
 			}
 		}
 		
+		//Check for Lower Right Tile
+		if(!(row + 1 == M || column - 1 == -1) || isPeriodic) {
+			int neighbourRow = Math.floorMod(row + 1, M);
+			int neighbourColumn = Math.floorMod(column -1, M);
+			int neighbourGrid = neighbourRow * M + neighbourColumn;
+			List<Particle> cellParticles = grid.get(neighbourGrid);
+			if(cellParticles != null) {
+				for(Particle p : cellParticles) {
+					if(isPeriodic) {
+						if(particle.getPeriodicContornDistance(p, L) <= rc) {
+							neighbours[particle.getNumber()] = true;
+						}
+					}
+					else {
+						if(particle.getDistance(p) <= rc) {
+							neighbours[particle.getNumber()] = true;
+						}
+					}
+				}
+			}	
+		}
+		
 		return neighbours;
 	}
 	
