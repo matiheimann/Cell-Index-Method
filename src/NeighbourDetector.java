@@ -55,12 +55,15 @@ public final class NeighbourDetector {
 				(int) Math.floor(particle.getY() / gridSideLength) * M;
 		int row = Math.floorDiv(gridParticle, M);
 		int column = Math.floorMod(gridParticle, M);
+		int neighbourRow;
+		int neighbourColumn;
+		int neighbourGrid;
 		for(int i = 0; i <= 1; i++) {
 			for(int j = 0; j <= 1; j++) {
 				if(!(row + i == M || column + j == M) || isPeriodic) {
-					int neighbourRow = Math.floorMod(row + i, M);
-					int neighbourColumn = Math.floorMod(column + j, M);
-					int neighbourGrid = neighbourRow * M + neighbourColumn;
+					neighbourRow = Math.floorMod(row + i, M);
+					neighbourColumn = Math.floorMod(column + j, M);
+					neighbourGrid = neighbourRow * M + neighbourColumn;
 					List<Particle> cellParticles = grid.get(neighbourGrid);
 					if(cellParticles != null) {
 						for(Particle p : cellParticles) {
@@ -82,9 +85,9 @@ public final class NeighbourDetector {
 		
 		//Check for Lower Right Tile
 		if(!(row + 1 == M || column - 1 == -1) || isPeriodic) {
-			int neighbourRow = Math.floorMod(row + 1, M);
-			int neighbourColumn = Math.floorMod(column -1, M);
-			int neighbourGrid = neighbourRow * M + neighbourColumn;
+			neighbourRow = Math.floorMod(row + 1, M);
+			neighbourColumn = Math.floorMod(column -1, M);
+			neighbourGrid = neighbourRow * M + neighbourColumn;
 			List<Particle> cellParticles = grid.get(neighbourGrid);
 			if(cellParticles != null) {
 				for(Particle p : cellParticles) {
