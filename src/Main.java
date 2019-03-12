@@ -6,14 +6,14 @@ public class Main
         try {
             if(args.length == 0)
                 throw new IllegalArgumentException("No arguments were passed");
-            if(!args[0].equals("-r") && !args[0].equals("-i"))
+            if(!args[0].equals("-g") && !args[0].equals("-i"))
                 throw new IllegalArgumentException("Invalid arguments.");
-            Inputs inputs = null;
+            IOManager inputs = null;
             if(args[0].equals("-r") && args.length == 4) {
-                inputs = new Inputs(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+                inputs = new IOManager(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
             }
             else if(args[0].equals("-i") &&  args.length == 7) {
-                inputs = new Inputs(Integer.parseInt(args[2]), 
+                inputs = new IOManager(Integer.parseInt(args[2]), 
                                         Double.parseDouble(args[3]), 
                                         Integer.parseInt(args[4]),
                                         Double.parseDouble(args[5]),

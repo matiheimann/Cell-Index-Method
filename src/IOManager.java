@@ -46,10 +46,6 @@ public final class IOManager
         return particles;
     }
 
-    public boolean isPeriodic() {
-        return isPeriodic;
-    }
-
     public void readInputs(String staticFile, String dynamicFile) {
         readStaticFile(staticFile);
         readDynamicFile(dynamicFile);
