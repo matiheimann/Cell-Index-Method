@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public final class NeighbourDetector {
-
+	
+	
+	
 	public static Map<Integer, List<Particle>> BruteForce(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
 		Map<Integer, List<Particle>> output = new HashMap<>();
 		for (Particle particle : particles)
@@ -14,12 +16,18 @@ public final class NeighbourDetector {
 		return output;
 	}
 	
-	public static Map<Integer, List<Particle>> CellIndexMethod(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
-		Map<Integer, List<Particle>> output = new HashMap<>();
+	public static boolean[][] CellIndexMethod(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
+		boolean[][] output = new boolean[particles.length][particles.length];
 		Map<Integer, LinkedList<Particle>> grid = makeGrid(particles, L, M);
 		for (Particle particle : particles)
 		{
-			output.put(particle.getNumber(), getNeighboursByCellIndexMethod(grid, particle, particles, L, M, rc, isPeriodic));
+			boolean[] neighboursOfParticle = getNeighboursByCellIndexMethod(grid, particle, particles, L, M, rc, isPeriodic);
+			for(int i = 0; i < neighboursOfParticle.length; i++) {
+				if(neighboursOfParticle[i]) {
+					output[i][particle.getNumber()] = true;
+					output[particle.getNumber()][i] = true;
+				}
+			}
 		}
 		return output;
 	}
@@ -36,31 +44,42 @@ public final class NeighbourDetector {
 		return neighbours;
 	}
 
-	private static List<Particle> getNeighboursByCellIndexMethod(Map<Integer, LinkedList<Particle>> grid, 
+	private static boolean[] getNeighboursByCellIndexMethod(Map<Integer, LinkedList<Particle>> grid, 
 																	Particle particle, 
 																	Particle[] particles, 
 																	double L, int M, double rc, boolean isPeriodic)
 	{
-		List<Particle> neighbours = new LinkedList<>();
+		boolean[] neighbours = new boolean[particles.length];
 		double gridSideLength = L / M;
 		int gridParticle = (int) Math.floor(particle.getX() / gridSideLength) + 
 				(int) Math.floor(particle.getY() / gridSideLength) * M;
 		int row = Math.floorDiv(gridParticle, M);
 		int column = Math.floorMod(gridParticle, M);
-		for(int i = -1; i <= 1; i++) {
-			for(int j = -1; j <= 1; j++) {
-				if(!(row + i == M || row + i == -1 || 
-						column + j == M || column + j == -1) || isPeriodic) {
+		for(int i = 0; i <= 1; i++) {
+			for(int j = 0; j <= 1; j++) {
+				if(!(row + i == M || column + j == M) || isPeriodic) {
 					int neighbourRow = Math.floorMod(row + i, M);
 					int neighbourColumn = Math.floorMod(column + j, M);
 					int neighbourGrid = neighbourRow * M + neighbourColumn;
-					if(grid.get(neighbourGrid) != null) {
-						neighbours.addAll(grid.get(neighbourGrid));
+					List<Particle> cellParticles = grid.get(neighbourGrid);
+					if(cellParticles != null) {
+						for(Particle p : cellParticles) {
+							if(isPeriodic) {
+								if(particle.getPeriodicContornDistance(p, L) <= rc) {
+									neighbours[particle.getNumber()] = true;
+								}
+							}
+							else {
+								if(particle.getDistance(p) <= rc) {
+									neighbours[particle.getNumber()] = true;
+								}
+							}
+						}
 					}
 				}	
 			}
 		}
-		neighbours.remove(particle);
+		
 		return neighbours;
 	}
 	
