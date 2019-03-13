@@ -56,9 +56,7 @@ public class Main
                     throw new IllegalArgumentException("Invalid arguments. For help: java -jar CellIndexMethod.jar -h");
             } else if(args[i] == "-h") {
                printHelp();
-            }
-            
-            else {
+            } else {
                 throw new IllegalArgumentException("Invalid arguments. For help: java -jar CellIndexMethod.jar -h");
             }
             io.HandleOutput();

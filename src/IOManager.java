@@ -16,10 +16,31 @@ public final class IOManager
     private double maxR = 0.5;
     private double minL = 0.0001;
     private double simulationTime = 0;
-    
-    
-    public IOManager() { }
-    
+    private boolean[][] neighbours;
+    private long timeElapsed;
+
+    public IOManager() {
+    }
+
+    /**
+     * @return the timeElapsed
+     */
+    public long getTimeElapsed() {
+        return timeElapsed;
+    }
+
+    /**
+     * @return the neighbours
+     */
+    public boolean[][] getNeighbours() {
+        return neighbours;
+    }
+
+    public void setOutput(boolean[][] neighbours, long timeElapsed) {
+        this.neighbours = neighbours;
+        this.timeElapsed = timeElapsed;
+    }
+
     public IOManager(int maxN, double maxR, double minL)
     {
         this.maxN = maxN;
@@ -147,6 +168,11 @@ public final class IOManager
             ret += (random.nextDouble() +  this.minL) * this.L + " " + (random.nextDouble() + this.minL) * this.L + "\n";
         }
         return ret;
+    }
+
+
+    public void handleOutput() {
+        
     }
 
     /**
