@@ -7,7 +7,9 @@ public class Main
             boolean isPeriodic;
             IOManager io;
             long starTime;
+            boolean[][] neighbours;
             int i = 0;
+
 
             if (args.length == 0)
                 throw new IllegalArgumentException("No arguments were passed");
@@ -51,13 +53,24 @@ public class Main
                         io.getN(), io.getL(), io.getRc(), isPeriodic), System.currentTimeMillis() - starTime);
                 }
                 else
-                    throw new IllegalArgumentException("Invalid arguments.");
-            } else {
-                throw new IllegalArgumentException("Invalid arguments.");
+                    throw new IllegalArgumentException("Invalid arguments. For help: java -jar CellIndexMethod.jar -h");
+            } else if(args[i] == "-h") {
+               printHelp();
+            }
+            
+            else {
+                throw new IllegalArgumentException("Invalid arguments. For help: java -jar CellIndexMethod.jar -h");
             }
             io.HandleOutput();
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private static void printHelp() {
+        System.out.println("java -jar CellIndexMethod.jar -r [MAX RADIUS] [MAX N] [MINL] [STATIC FILE NAME] [DYNAMIC FILENAME]");
+        System.out.println("java -jar CellIndexMethod.jar -i [STATIC FILE] [DYNAMIC FILE] [METHOD OPTIONS] [PERIODIC OR NOT][MINL] [STATIC FILE NAME] [DYNAMIC FILENAME]");
+        System.out.println("METHOD OPTIONS: -c for cell index method or -b for brute force");
+        System.out.println("PERIODIC OR NOT: -p for periodic contorn or -np for not periodic option.");
     }
 }
