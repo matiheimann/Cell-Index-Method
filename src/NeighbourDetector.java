@@ -7,16 +7,21 @@ public final class NeighbourDetector {
 	
 	
 	
-	public static Map<Integer, List<Particle>> BruteForce(Particle[] particles, int N, double L,  double rc, boolean isPeriodic) {
-		Map<Integer, List<Particle>> output = new HashMap<>();
-		for (Particle particle : particles)
-		{
-			output.put(particle.getNumber(), getNeighboursByBruteForce(particle, particles, L, rc, isPeriodic));
+	public static boolean[][] BruteForce(Particle[] particles, int N, double L,  double rc, boolean isPeriodic) {
+		boolean[][] output = new boolean[particles.length][particles.length];
+		for(int i = 0; i < particles.length; i++) {
+			for(int j = 0; j < i; j++) {
+				if((!isPeriodic && particles[i].getDistanceTo(particles[j]) <= rc) 
+						|| (isPeriodic && particles[i].getPeriodicContornDistance(particles[j], L) <= rc)) {
+					output[i][j] = true;
+					output[j][i] = true;
+				}				
+			}
 		}
 		return output;
 	}
 	
-	public static Map<Integer, List<Particle>> CellIndexMethod(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
+	public static boolean[][] CellIndexMethod(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
 		boolean[][] output = new boolean[particles.length][particles.length];
 		Map<Integer, LinkedList<Particle>> grid = makeGrid(particles, L, M);
 		for (Particle particle : particles)
@@ -30,18 +35,6 @@ public final class NeighbourDetector {
 			}
 		}
 		return output;
-	}
-
-	private static List<Particle> getNeighboursByBruteForce(Particle particle, Particle[] particles, double L, double rc, boolean isPeriodic) {
-		List<Particle> neighbours = new LinkedList<>();
-		for(Particle other : particles) {
-			if(particle.getNumber() != other.getNumber()) {
-				if((!isPeriodic && particle.getDistanceTo(other) <= rc) 
-					|| (isPeriodic && particle.getPeriodicContornDistance(particle, L) <= rc)) 
-					neighbours.add(other);
-			}
-		}
-		return neighbours;
 	}
 
 	private static boolean[] getNeighboursByCellIndexMethod(Map<Integer, LinkedList<Particle>> grid, 
