@@ -6,6 +6,7 @@ public class Main
         try {
             boolean isPeriodic;
             IOManager io;
+            long starTime;
             int i = 0;
 
             if (args.length == 0)
@@ -35,16 +36,20 @@ public class Main
                     throw new IllegalArgumentException("Invalid arguments.");
                 }
                 i++;
-                double startTime = TIme
                 // Method determination
                 if(args[i].equals("-c"))
-                     
+                {
+                    starTime = System.currentTimeMillis();                     
                     io.setOutput(NeighbourDetector.CellIndexMethod(io.getParticles(),
                                                     io.getN(), io.getL(), 
-                                                    io.getM(), io.getRc(), isPeriodic));
+                                                    io.getM(), io.getRc(), isPeriodic), System.currentTimeMillis() - starTime);
+                }
                 else if(args[i].equals("-b"))
+                {
+                    starTime = System.currentTimeMillis();
                     io.setOutput(NeighbourDetector.BruteForce(io.getParticles(),
-                        io.getN(), io.getL(), io.getRc(), isPeriodic));
+                        io.getN(), io.getL(), io.getRc(), isPeriodic), System.currentTimeMillis() - starTime);
+                }
                 else
                     throw new IllegalArgumentException("Invalid arguments.");
             } else {

@@ -1,0 +1,21 @@
+<project name="CellIndexMethod" default="dist" basedir=".">
+    <!-- Compila el proyecto, deja los archivos class en el directorio bin -->
+    <target name="compile">
+        <mkdir dir="bin"/>
+        <javac srcdir="src" destdir="bin" classpath="lib/junit-4.7.jar"/>
+    </target>
+    <!-- Crea el jar ejecutable con todo el proyecto compilado. -->
+    <target name="dist" depends="compile">
+        <jar destfile="CellIndexMethod.jar" basedir="bin">
+            <manifest>
+                <attribute name="Main-Class" value="Main"/>
+            </manifest>
+        </jar>
+    </target>
+    <!-- Borra todos los archivos generados luego de compilar. -->
+    <target name="clean">
+        <delete dir="bin"/>
+        <delete dir="doc" />
+        <delete file="CellIndexMethod.jar" />
+    </target>
+</project>
