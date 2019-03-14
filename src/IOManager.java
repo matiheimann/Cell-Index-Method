@@ -11,7 +11,7 @@ public final class IOManager
     private int N; // number of particles
     private int M; // gridSize
     private Particle[] particles;
-    private double maxL;
+    private double maxL = 100;
     private int maxN;
     private double maxR = 0.5;
     private double minL = 0.0001;
@@ -154,9 +154,7 @@ public final class IOManager
             FileWriter fileWriter = new FileWriter(staticFile);
             fileWriter.write(getRandomStaticFileContent());
             fileWriter.close();
-            System.out.println("Asdad");
             fileWriter = new FileWriter(dynamicFile);
-            file.createNewFile();
             fileWriter.write(getRandomDynamicFileContent());
             fileWriter.close();
         } catch (Exception e) {
@@ -165,24 +163,26 @@ public final class IOManager
     }
 
     private String getRandomStaticFileContent() {
+        int i = 0;
         Random random = new Random();
         this.N = random.nextInt(this.maxN) + 1;
-        this.L = (random.nextDouble() + 0.0000001) * this.maxL;
+        this.L = random.nextDouble()  * (this.maxL - this.minL) + this.minL;
         String ret = this.N + "\n" + this.L + "\n";
-        while(this.N-- > 0)
+        while(i++ < this.N)
         {
-            ret += random.nextDouble() + " " + random.nextDouble() + "\n";
+            ret += random.nextDouble()  + " " + random.nextDouble()+ "\n";
         }
         return ret;
     }
 
     private String getRandomDynamicFileContent() {
+        int i = 0;
         Random random = new Random();
         String ret = random.nextInt() + "\n";
-        while(N-- > 0)
+        while(i++ < this.N)
         {
             // TODO: checkForCollisions();
-            ret += (random.nextDouble() +  this.minL) * this.L + " " + (random.nextDouble() + this.minL) * this.L + "\n";
+            ret += random.nextDouble() * (this.L - this.minL) + this.minL + " " + random.nextDouble() * (this.L - this.minL) + this.minL + "\n";
         }
         return ret;
     }
@@ -190,6 +190,7 @@ public final class IOManager
 
     public void handleOutput() {
         try {
+            System.out.println("Excecution time" + this.timeElapsed);
             File output = new File("simulationResult" + Float.toString(System.currentTimeMillis()));
             FileWriter writer = new FileWriter(output.getName());
             writer.write(getOutputContent());
