@@ -5,7 +5,6 @@ public class Main
             boolean isPeriodic;
             IOManager io = null;
             long starTime;
-            boolean[][] neighbours;
             int i = 0;
             System.out.println(args.length);
             if (args.length == 0)
@@ -19,6 +18,7 @@ public class Main
                                         Double.parseDouble(args[i++]), 
                                         Double.parseDouble(args[i++]));
                 io.writeRandomInputs(args[i++], args[i]);
+                return;
             }
             // Find neighbours reading from files.
             else if(args[i].equals("-i") && args.length == 5) {
@@ -53,6 +53,7 @@ public class Main
                     throw new IllegalArgumentException("Invalid arguments. For help: java -jar CellIndexMethod.jar -h");
             } else if(args[i].equals("-h") && args.length == 1) {
                printHelp();
+               return;
             } else {
                 throw new IllegalArgumentException("Invalid arguments. For help: java -jar CellIndexMethod.jar -h");
             }
