@@ -1,6 +1,6 @@
 <project name="CellIndexMethod" default="dist" basedir=".">
     <!-- Compila el proyecto, deja los archivos class en el directorio bin -->
-    <target name="compile">
+    <target name="compile" depends="clean">
         <mkdir dir="bin"/>
         <javac srcdir="src" destdir="bin" classpath="lib/junit-4.7.jar"/>
     </target>

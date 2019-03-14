@@ -1,20 +1,21 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
 public final class IOManager
 {
-    private double L = 20; // Side length
-    private double rc = 1; // interaction radius
+    private double L = 40; // Side length
+    private double rc = 0.9; // interaction radius
     private int N; // number of particles
-    private int M; // gridSize
+    private int M = 5; // gridSize
     private Particle[] particles;
-    private double maxL = 100;
+    private double maxL = 10;
     private int maxN;
-    private double maxR = 0.5;
-    private double minL = 0.0001;
+    private double maxR = 0.00001;
+    private double minL = 0.00001;
     private double simulationTime = 0;
     private boolean[][] neighbours;
     private long timeElapsed;
@@ -41,11 +42,11 @@ public final class IOManager
         this.timeElapsed = timeElapsed;
     }
 
-    public IOManager(int maxN, double maxR, double minL)
+    public IOManager(int maxN, double maxR, double maxL)
     {
         this.maxN = maxN;
         this.maxR = maxR;
-        this.minL = minL;
+        this.maxL = maxL;
     }
 
     public double getL() {
@@ -71,6 +72,17 @@ public final class IOManager
     public void readInputs(String staticFile, String dynamicFile) {
         readStaticFile(staticFile);
         readDynamicFile(dynamicFile);
+        for(Particle p : particles)
+            if(this.maxR < p.getRadius())
+                this.maxR = p.getRadius();
+        if(this.L / this.M <= this.rc + 2 * this.maxR) {
+            throw new IllegalArgumentException("L/M > rc + 2 * maxRadius restriction");
+        }
+        System.out.println("L value: " + this.L);
+        System.out.println("N value: " + this.N);
+        System.out.println("M value: " + this.M);
+        System.out.println("rc value: " + this.rc);
+        System.out.println("r max value: " + this.maxR);
     }
 
     public void readStaticFile(String file)
@@ -79,8 +91,8 @@ public final class IOManager
             int i = scanner.nextInt();
             this.L = scanner.nextDouble();
             this.N = i;
+            i = 0;
             this.particles = new Particle[this.N];
-
             while(i < this.N)
             {
                 Particle particle = new Particle();
@@ -110,7 +122,7 @@ public final class IOManager
         try(Scanner scanner = new Scanner(new File(file))) {
             scanner.nextInt();
             int i = 0;
-            while(i++ < this.N)
+            while(i < this.N)
             {
                 // TODO: velocity 
                 if(scanner.hasNextDouble())
@@ -170,7 +182,7 @@ public final class IOManager
         String ret = this.N + "\n" + this.L + "\n";
         while(i++ < this.N)
         {
-            ret += random.nextDouble()  + " " + random.nextDouble()+ "\n";
+            ret += random.nextDouble() * (this.maxR - this.minL) + this.minL + " " + random.nextDouble()+ "\n";
         }
         return ret;
     }
@@ -182,7 +194,10 @@ public final class IOManager
         while(i++ < this.N)
         {
             // TODO: checkForCollisions();
-            ret += random.nextDouble() * (this.L - this.minL) + this.minL + " " + random.nextDouble() * (this.L - this.minL) + this.minL + "\n";
+            double x = random.nextDouble() * (this.L - this.minL) + this.minL;
+            double y = random.nextDouble() * (this.L - this.minL) + this.minL;
+            // System.out.println(x + " " + y);
+            ret +=  x + " " + y + "\n";
         }
         return ret;
     }
@@ -190,24 +205,38 @@ public final class IOManager
 
     public void handleOutput() {
         try {
-            System.out.println("Excecution time" + this.timeElapsed);
-            File output = new File("simulationResult" + Float.toString(System.currentTimeMillis()));
+            System.out.println("Excecution time: " + this.timeElapsed);
+            File output = new File("simRes" + Long.toString(System.nanoTime()).hashCode());
+            if(output.createNewFile()) {
+                System.out.println("File was created.");
+            } else {
+                System.out.println("File was not created.");
+            }
             FileWriter writer = new FileWriter(output.getName());
             writer.write(getOutputContent());
             writer.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            System.out.println(e.toString());
         } catch (Exception e) {
-            System.out.println("IO exception");
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            System.out.println(e.toString());
         }
     }
 
     private String getOutputContent() {
-        String ret = new String();
+        String ret = "";
         for(int i = 0; i < neighbours.length;i++) {
             ret += i;
-            for(int j = 0; i < neighbours[i].length ; j++)
+            for(int j = 0; j < neighbours[i].length ; j++) {
+                System.out.print(neighbours[i][j] + " ");
                 if(neighbours[i][j])
                     ret += " " + j ;
-                ret += "\n";            
+            }
+            System.out.println();
+            ret += "\n";            
         }
         return ret;
     }
