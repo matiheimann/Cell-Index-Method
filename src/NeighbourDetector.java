@@ -65,7 +65,7 @@ public final class NeighbourDetector {
 							else {
 								if(particle.getDistance(p) <= rc) {
 									neighbours[particle.getNumber()] = true;
-								}
+								 }
 							}
 						}
 					}
@@ -94,6 +94,8 @@ public final class NeighbourDetector {
 				}
 			}	
 		}
+		
+		neighbours[particle.getNumber()] = false;
 		
 		return neighbours;
 	}
