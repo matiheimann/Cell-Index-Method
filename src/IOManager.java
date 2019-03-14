@@ -154,9 +154,7 @@ public final class IOManager
             FileWriter fileWriter = new FileWriter(staticFile);
             fileWriter.write(getRandomStaticFileContent());
             fileWriter.close();
-            System.out.println("Asdad");
             fileWriter = new FileWriter(dynamicFile);
-            file.createNewFile();
             fileWriter.write(getRandomDynamicFileContent());
             fileWriter.close();
         } catch (Exception e) {
