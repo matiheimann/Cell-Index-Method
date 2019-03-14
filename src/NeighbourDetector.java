@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 public final class NeighbourDetector {
-	
-	
-	
 	public static boolean[][] BruteForce(Particle[] particles, int N, double L,  double rc, boolean isPeriodic) {
 		boolean[][] output = new boolean[particles.length][particles.length];
 		for(int i = 0; i < particles.length; i++) {

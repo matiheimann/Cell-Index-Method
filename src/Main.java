@@ -1,19 +1,16 @@
-import java.util.Random;
-
 public class Main 
 {
     public static void main(String[] args) {
         try {
             boolean isPeriodic;
-            IOManager io;
+            IOManager io = null;
             long starTime;
             boolean[][] neighbours;
             int i = 0;
-
-
+            System.out.println(args.length);
             if (args.length == 0)
                 throw new IllegalArgumentException("No arguments were passed");
-            if (!args[i].equals("-") && !args[i].equals("-i"))
+            if (!args[i].equals("-r") && !args[i].equals("-i") && !args[i].equals("-h"))
                 throw new IllegalArgumentException("Invalid arguments.");
             // Generate files
             if (args[i].equals("-r") && args.length == 6) {
@@ -54,21 +51,25 @@ public class Main
                 }
                 else
                     throw new IllegalArgumentException("Invalid arguments. For help: java -jar CellIndexMethod.jar -h");
-            } else if(args[i] == "-h") {
+            } else if(args[i].equals("-h") && args.length == 1) {
                printHelp();
             } else {
                 throw new IllegalArgumentException("Invalid arguments. For help: java -jar CellIndexMethod.jar -h");
             }
-            io.HandleOutput();
+            if(io != null)
+                io.handleOutput();
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     private static void printHelp() {
-        System.out.println("java -jar CellIndexMethod.jar -r [MAX RADIUS] [MAX N] [MINL] [STATIC FILE NAME] [DYNAMIC FILENAME]");
+        System.out.println("\n");
+        System.out.println("Available Commands:");
+        System.out.println("java -jar CellIndexMethod.jar -r [MAX N] [MAX RADIUS] [MINL] [STATIC FILE NAME] [DYNAMIC FILENAME]");
         System.out.println("java -jar CellIndexMethod.jar -i [STATIC FILE] [DYNAMIC FILE] [METHOD OPTIONS] [PERIODIC OR NOT][MINL] [STATIC FILE NAME] [DYNAMIC FILENAME]");
         System.out.println("METHOD OPTIONS: -c for cell index method or -b for brute force");
         System.out.println("PERIODIC OR NOT: -p for periodic contorn or -np for not periodic option.");
     }
 }
+
