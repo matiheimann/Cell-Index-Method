@@ -135,11 +135,27 @@ public final class IOManager
 
     public void writeRandomInputs(String staticFile, String dynamicFile) {
         try {
+            File file = new File(staticFile);
+            if(file.createNewFile()) {
+                System.out.println("Static file was created.");
+            } else {
+                System.out.println(staticFile + " static file was not created");
+                return;
+            }
+            
+            file = new File(dynamicFile);
+            if(file.createNewFile()) {
+                System.out.println("dynamic file was created.");
+            } else {
+                System.out.println(dynamicFile + " dynamic file was not created");
+                return;
+            }
+
             FileWriter fileWriter = new FileWriter(staticFile);
             fileWriter.write(getRandomStaticFileContent());
             fileWriter.close();
-
             fileWriter = new FileWriter(dynamicFile);
+            file.createNewFile();
             fileWriter.write(getRandomDynamicFileContent());
             fileWriter.close();
         } catch (Exception e) {
@@ -172,7 +188,26 @@ public final class IOManager
 
 
     public void handleOutput() {
-        
+        try {
+            File output = new File("simulationResult" + Float.toString(System.currentTimeMillis()));
+            FileWriter writer = new FileWriter(output.getName());
+            writer.write(getOutputContent());
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("IO exception");
+        }
+    }
+
+    private String getOutputContent() {
+        String ret = new String();
+        for(int i = 0; i < neighbours.length;i++) {
+            ret += i;
+            for(int j = 0; i < neighbours[i].length ; j++)
+                if(neighbours[i][j])
+                    ret += " " + j ;
+                ret += "\n";            
+        }
+        return ret;
     }
 
     /**
