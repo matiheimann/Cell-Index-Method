@@ -19,6 +19,7 @@ public final class NeighbourDetector {
 	}
 	
 	public static boolean[][] CellIndexMethod(Particle[] particles, int N, double L, int M, double rc, boolean isPeriodic) {
+		
 		boolean[][] output = new boolean[particles.length][particles.length];
 		Map<Integer, LinkedList<Particle>> grid = makeGrid(particles, L, M);
 		for (Particle particle : particles)
@@ -57,15 +58,9 @@ public final class NeighbourDetector {
 					List<Particle> cellParticles = grid.get(neighbourGrid);
 					if(cellParticles != null) {
 						for(Particle p : cellParticles) {
-							if(isPeriodic) {
-								if(particle.getPeriodicContornDistance(p, L) <= rc) {
-									neighbours[particle.getNumber()] = true;
-								}
-							}
-							else {
-								if(particle.getDistance(p) <= rc) {
-									neighbours[particle.getNumber()] = true;
-								 }
+							if((!isPeriodic && particles[p.getNumber()].getDistanceTo(particle) <= rc) 
+									|| (isPeriodic && particles[p.getNumber()].getPeriodicContornDistance(particle, L) <= rc)) {
+								neighbours[p.getNumber()] = true;
 							}
 						}
 					}
@@ -81,15 +76,9 @@ public final class NeighbourDetector {
 			List<Particle> cellParticles = grid.get(neighbourGrid);
 			if(cellParticles != null) {
 				for(Particle p : cellParticles) {
-					if(isPeriodic) {
-						if(particle.getPeriodicContornDistance(p, L) <= rc) {
-							neighbours[particle.getNumber()] = true;
-						}
-					}
-					else {
-						if(particle.getDistance(p) <= rc) {
-							neighbours[particle.getNumber()] = true;
-						}
+					if((!isPeriodic && particles[p.getNumber()].getDistanceTo(particle) <= rc) 
+							|| (isPeriodic && particles[p.getNumber()].getPeriodicContornDistance(particle, L) <= rc)) {
+						neighbours[p.getNumber()] = true;
 					}
 				}
 			}	
@@ -105,14 +94,15 @@ public final class NeighbourDetector {
 		double gridSideLength = L/M;
 		
 		for(Particle particle : particles) {
-			int tile = (int) Math.floor(particle.getX() / gridSideLength) + 
-					(int) Math.floor(particle.getY() / gridSideLength) * M;
+			int tile = (int) (Math.floor(particle.getX() / gridSideLength) + 
+					 Math.floor(particle.getY() / gridSideLength) * M);
 			
 			if(grid.get(tile) == null) {
 				grid.put(tile, new LinkedList<>());
 			}
 			grid.get(tile).add(particle);
 		}
+		
 		return grid;
 	}
 }
