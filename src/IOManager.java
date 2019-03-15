@@ -305,15 +305,15 @@ public final class IOManager
     /**
      * @return the maxR
      */
-    public double getMaxR() {
-        return maxR;
+    public double getR() {
+        return r;
     }
 
     /**
      * @param maxR the maxR to set
      */
-    public void setMaxR(double maxR) {
-        this.maxR = maxR;
+    public void setR(double r) {
+        this.r = r;
     }
 
     /**
