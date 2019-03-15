@@ -1,9 +1,9 @@
 function makecircle(r, x, y, c)
-  t = linspace(0,2*pi,25)'; 
+  t = linspace(0,2*pi,100); 
   circsx = r.*cos(t) + x; 
-  circsy = r.*sin(t) + y;
-  circsx = circsy; 
-  fill(circsx,circsy, c); 
+  circsy = r.*sin(t) + y; 
+  fill(circsx,circsy,c);
+  hold on; 
 endfunction
 
 function particlesRepresentation(outputFile, staticFile, dynamicFile, id)
@@ -12,7 +12,8 @@ function particlesRepresentation(outputFile, staticFile, dynamicFile, id)
   q = M1(1,1);
   l = M1(2,1);
   
-  radius = {};
+  axis([-l, l, -l, l]);
+  radius = zeros(q);
   
   for i = 3:rows(M1)
     radius(i-2) = M1(i,1);
@@ -20,16 +21,17 @@ function particlesRepresentation(outputFile, staticFile, dynamicFile, id)
 
   M2 = dlmread(dynamicFile, ' ');
   
-  positions = {{}};
+  positions = zeros(q,2);
   
-  for i = 1:rows(M2)
-    positions(i,1) = M2(i, 1);
-    positions(i,2) = M2(i, 2);
+  for i = 2:rows(M2)
+    positions(i-1,1) = M2(i, 1);
+    positions(i-1,2) = M2(i, 2);
   endfor
   
   M3 = dlmread(outputFile, ' ');
   drown = zeros(1, q);
-  
+   
+  newplot();
   makecircle(radius(M3(id,1) + 1), positions(M3(id,1) + 1, 1), positions(M3(id,1) + 1, 2), 'g');
   drown(M3(1,1) + 1) = 1;
   
