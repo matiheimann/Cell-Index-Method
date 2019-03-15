@@ -192,8 +192,8 @@ public final class IOManager
         while(i++ < this.N)
         {
             // TODO: checkForCollisions();
-            double x = random.nextDouble() * (this.L - this.minL) + this.minL;
-            double y = random.nextDouble() * (this.L - this.minL) + this.minL;
+            double x = random.nextDouble() * (this.L - 2 * this.r) + this.r;
+            double y = random.nextDouble() * (this.L - 2 * this.r) + this.r;
             // System.out.println(x + " " + y);
             ret +=  x + " " + y + "\n";
         }
