@@ -50,4 +50,9 @@ public class Particle extends Location2D {
     public void setProperty(double property) {
         this.property = property;
     }
+    
+    public String print() {
+		return getRadius() + " " + getX() + " " + getY();
+	}
+    
 }
