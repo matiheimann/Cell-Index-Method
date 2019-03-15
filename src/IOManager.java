@@ -7,15 +7,15 @@ import java.util.Scanner;
 
 public final class IOManager
 {
-    private double L = 40; // Side length
-    private double rc = 0.9; // interaction radius
+    private double L = 20; // Side length
+    private double rc = 1; // interaction radius
     private int N; // number of particles
     private int M = 5; // gridSize
     private Particle[] particles;
     private double maxL = 10;
     private int maxN;
-    private double maxR = 0.00001;
-    private double minL = 0.00001;
+    private double r = 0.00001;
+    private double minL = 0.0000001;
     private double simulationTime = 0;
     private boolean[][] neighbours;
     private long timeElapsed;
@@ -42,11 +42,11 @@ public final class IOManager
         this.timeElapsed = timeElapsed;
     }
 
-    public IOManager(int maxN, double maxR, double maxL)
+    public IOManager(int N, double r, double L)
     {
-        this.maxN = maxN;
-        this.maxR = maxR;
-        this.maxL = maxL;
+        this.N = N;
+        this.r = r;
+        this.L = L;
     }
 
     public double getL() {
@@ -73,16 +73,16 @@ public final class IOManager
         readStaticFile(staticFile);
         readDynamicFile(dynamicFile);
         for(Particle p : particles)
-            if(this.maxR < p.getRadius())
-                this.maxR = p.getRadius();
-        if(this.L / this.M <= this.rc + 2 * this.maxR) {
+            if(this.r < p.getRadius())
+                this.r = p.getRadius();
+        if(this.L / this.M <= this.rc + 2 * this.r) {
             throw new IllegalArgumentException("L/M > rc + 2 * maxRadius restriction");
         }
         System.out.println("L value: " + this.L);
         System.out.println("N value: " + this.N);
         System.out.println("M value: " + this.M);
         System.out.println("rc value: " + this.rc);
-        System.out.println("r max value: " + this.maxR);
+        System.out.println("r  value: " + this.r);
     }
 
     public void readStaticFile(String file)
@@ -177,12 +177,10 @@ public final class IOManager
     private String getRandomStaticFileContent() {
         int i = 0;
         Random random = new Random();
-        this.N = random.nextInt(this.maxN) + 1;
-        this.L = random.nextDouble()  * (this.maxL - this.minL) + this.minL;
         String ret = this.N + "\n" + this.L + "\n";
         while(i++ < this.N)
         {
-            ret += random.nextDouble() * (this.maxR - this.minL) + this.minL + " " + random.nextDouble()+ "\n";
+            ret += this.r + " " + random.nextDouble()+ "\n";
         }
         return ret;
     }
